@@ -4,6 +4,9 @@ CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and 
 More information can be found at the [official site](https://codeigniter.com).
 
 This repository is a starter kit for CodeIgniter 4. Using codeigniter version 4.6.1, PHP version 8.4 and bootstrap version 5.
+
+> **API verified and tested in Postman**
+
 ### Documentation
 
 The [User Guide](https://codeigniter.com/user_guide/) is the primary documentation for CodeIgniter 4.
