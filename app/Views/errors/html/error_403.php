@@ -1,9 +1,24 @@
 <?php
 /**
- * Custom 403 Access Denied view
- * Expects an optional $message variable passed by controllers.
+ * Custom 403 Access Denied view — Role-Aware
+ * Expects optional $message and $userRole variables passed by controllers.
  */
 $message = $message ?? 'You do not have permission to access this page.';
+$userRole = $userRole ?? session('user')['role'] ?? null;
+
+// Determine dashboard link and display name based on role
+$dashboardLink = base_url('login');
+$roleName = 'User';
+if ($userRole === 'admin') {
+    $dashboardLink = base_url('admin/roles');
+    $roleName = 'Administrator';
+} elseif ($userRole === 'teacher') {
+    $dashboardLink = base_url('dashboard');
+    $roleName = 'Teacher';
+} elseif ($userRole === 'student') {
+    $dashboardLink = base_url('student/dashboard');
+    $roleName = 'Student';
+}
 ?><!doctype html>
 <html lang="en">
 <head>
@@ -34,8 +49,11 @@ $message = $message ?? 'You do not have permission to access this page.';
         </div>
         <h1>403 Access Denied</h1>
         <p><?php echo esc($message); ?></p>
+        <?php if ($userRole): ?>
+            <p style="color:#9ca3af;margin-top:12px;font-size:12px;">Logged in as: <strong><?= esc($roleName) ?></strong></p>
+        <?php endif; ?>
         <div class="hint">If you believe this is an error, contact your system administrator.</div>
-        <a class="btn" href="<?= base_url('dashboard') ?>">Return to dashboard</a>
+        <a class="btn" href="<?= $dashboardLink ?>">Return to your dashboard</a>
     </div>
 </body>
 </html>

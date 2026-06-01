@@ -74,14 +74,14 @@ class UserAdminController extends BaseController
         // Prevent admin self-edit: if the target is the current user and is an admin, return 403
         $currentUserId = (int) (session('user')['id'] ?? session('user')['userID'] ?? 0);
         if (($user['role_name'] ?? '') === 'admin' && (int) $user['id'] === $currentUserId) {
-            $message = 'You are currently logged in as a teacher. This account does not have the necessary permissions to view this system segment.';
-            return $this->response->setStatusCode(403)->setBody(view('errors/html/error_403', ['message' => $message]));
+            $message = 'You are currently logged in as an administrator. This account does not have the necessary permissions to edit itself.';
+            return $this->response->setStatusCode(403)->setBody(view('errors/html/error_403', ['message' => $message, 'userRole' => 'admin']));
         }
         // Prevent teachers from editing admin accounts — return 403 for clarity
         $currentRole = strtolower(session('user')['role'] ?? '');
         if (($user['role_name'] ?? '') === 'admin' && $currentRole === 'teacher') {
-            $message = 'You are currently logged in as a teacher. This account does not have the necessary permissions to view this system segment.';
-            return $this->response->setStatusCode(403)->setBody(view('errors/html/error_403', ['message' => $message]));
+            $message = 'You are currently logged in as a teacher. This account does not have the necessary permissions to edit administrator accounts.';
+            return $this->response->setStatusCode(403)->setBody(view('errors/html/error_403', ['message' => $message, 'userRole' => 'teacher']));
         }
         // Other non-admin roles will be redirected with a flash message
         if (($user['role_name'] ?? '') === 'admin' && $currentRole !== 'admin') {
@@ -109,13 +109,13 @@ class UserAdminController extends BaseController
         $currentRole = strtolower(session('user')['role'] ?? '');
         $currentUserId = (int) (session('user')['id'] ?? session('user')['userID'] ?? 0);
         if (($target['role_name'] ?? '') === 'admin' && (int) $target['id'] === $currentUserId) {
-            $message = 'You are currently logged in as a teacher. This account does not have the necessary permissions to view this system segment.';
-            return $this->response->setStatusCode(403)->setBody(view('errors/html/error_403', ['message' => $message]));
+            $message = 'You are currently logged in as an administrator. This account does not have the necessary permissions to update itself.';
+            return $this->response->setStatusCode(403)->setBody(view('errors/html/error_403', ['message' => $message, 'userRole' => 'admin']));
         }
         // Prevent teachers from updating admin accounts — return 403 for clarity
         if (($target['role_name'] ?? '') === 'admin' && $currentRole === 'teacher') {
-            $message = 'You are currently logged in as a teacher. This account does not have the necessary permissions to view this system segment.';
-            return $this->response->setStatusCode(403)->setBody(view('errors/html/error_403', ['message' => $message]));
+            $message = 'You are currently logged in as a teacher. This account does not have the necessary permissions to update administrator accounts.';
+            return $this->response->setStatusCode(403)->setBody(view('errors/html/error_403', ['message' => $message, 'userRole' => 'teacher']));
         }
         // Other non-admin roles will be redirected with a flash message
         if (($target['role_name'] ?? '') === 'admin' && $currentRole !== 'admin') {

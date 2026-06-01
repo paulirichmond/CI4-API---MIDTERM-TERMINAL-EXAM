@@ -64,7 +64,7 @@ class StudentManagementController extends BaseController
         if ($currentRole === 'teacher' && $viewedRole === 'admin') {
             // Return a 403 Forbidden with a clear message
             $message = 'You are currently logged in as a teacher. This account does not have the necessary permissions to view this system segment.';
-            return $this->response->setStatusCode(403)->setBody(view('errors/html/error_403', ['message' => $message]));
+            return $this->response->setStatusCode(403)->setBody(view('errors/html/error_403', ['message' => $message, 'userRole' => 'teacher']));
         }
 
         return view('teacher/student_show', array_merge($this->data, [
@@ -94,7 +94,7 @@ class StudentManagementController extends BaseController
 
         if ($currentRole === 'teacher' && strtolower($student['role_name'] ?? '') === 'admin') {
             $message = 'You are currently logged in as a teacher. This account does not have the necessary permissions to edit this student profile.';
-            return $this->response->setStatusCode(403)->setBody(view('errors/html/error_403', ['message' => $message]));
+            return $this->response->setStatusCode(403)->setBody(view('errors/html/error_403', ['message' => $message, 'userRole' => 'teacher']));
         }
 
         return view('teacher/student_edit', array_merge($this->data, [
