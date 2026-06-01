@@ -71,6 +71,7 @@ $routes->post('api/v1/auth/token', 'Api\AuthController::issueToken');
 
 $routes->group('api/v1', ['filter' => 'api_auth'], function ($routes) {
     $routes->delete('auth/token',      'Api\AuthController::revokeToken');
+    $routes->get('profile',            'Api\StudentsController::profile');
     $routes->get('students',           'Api\StudentsController::index');
     $routes->get('students/(:num)',    'Api\StudentsController::show/$1');
 });

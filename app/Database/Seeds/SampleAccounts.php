@@ -27,6 +27,7 @@ class SampleAccounts extends Seeder
             ['Trisha Castillo',    'trisha.castillo@digimon.edu',    'BSCS',  '1', 'C', '2024-04-18 08:00:00', '2024013'],
             ['Jerome Navarro',     'jerome.navarro@digimon.edu',     'BSBA',  '4', 'B', '2024-05-02 10:00:00', '2024014'],
             ['Camille Lim',        'camille.lim@digimon.edu',        'BSED',  '3', 'A', '2024-05-20 09:00:00', '2024015'],
+            ['Paul Richmond',      'richmondpauli@mail.io',          'BSIT',  '2', 'A', '2024-06-01 10:00:00', '2024016'],
         ];
 
         foreach ($students as [$name, $email, $course, $year, $section, $created, $sid]) {
@@ -46,6 +47,34 @@ class SampleAccounts extends Seeder
                     'updated_at' => $created,
                 ]);
             }
+        }
+
+        // Ensure the requested student test account uses the exact password needed for API testing.
+        $specialEmail = 'richmondpauli@mail.io';
+        $specialPassword = 'Monmon14';
+        $specialData = [
+            'fullname'      => 'Monmon Pauli',
+            'username'      => $specialEmail,
+            'password'      => password_hash($specialPassword, PASSWORD_DEFAULT),
+            'role'          => 3,
+            'role_id'       => 3,
+            'student_id'    => '423004636',
+            'course'        => 'BSIT',
+            'year_level'    => '3rd Year',
+            'section'       => '3.7',
+            'phone'         => '09938982792',
+            'address'       => 'Quezon City',
+            'profile_image' => 'my profile',
+            'created_at'    => '2026-06-01 18:24:48',
+            'updated_at'    => '2026-06-01 18:24:48',
+        ];
+
+        if (! $this->db->table('users')->where('username', $specialEmail)->countAllResults()) {
+            $this->db->table('users')->insert($specialData);
+        } else {
+            $updateData = $specialData;
+            unset($updateData['username']);
+            $this->db->table('users')->where('username', $specialEmail)->update($updateData);
         }
 
         // ── TEACHERS (role_id=2, role=2) ──────────────────────────────
@@ -112,7 +141,7 @@ class SampleAccounts extends Seeder
         }
 
         echo "Sample accounts seeded successfully!\n";
-        echo "- 15 Students (password: student123)\n";
+        echo "- 16 Students (password: student123)\n";
         echo "- 3 Teachers  (password: teacher123)\n";
         echo "- 2 Coordinators (password: coord123)\n";
         echo "- 1 Admin     (password: admin123)\n";

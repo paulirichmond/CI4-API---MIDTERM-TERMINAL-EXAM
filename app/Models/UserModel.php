@@ -71,9 +71,9 @@ class UserModel extends Model
         return $this->db->table('users u')
             ->select('u.id, u.fullname, u.username, u.student_id, u.course,
                       u.year_level, u.section, u.profile_image, u.created_at,
-                      ur.role_name')
-            ->join('user_role ur', 'ur.id = u.role', 'left')
-            ->where('ur.role_name', 'student')
+                      r.name AS role_name')
+            ->join('roles r', 'r.id = u.role_id', 'left')
+            ->where('r.name', 'student')
             ->orderBy('u.fullname', 'ASC')
             ->get()->getResultArray();
     }
@@ -84,10 +84,10 @@ class UserModel extends Model
         return $this->db->table('users u')
             ->select('u.id, u.fullname, u.username, u.student_id, u.course,
                       u.year_level, u.section, u.profile_image, u.created_at,
-                      ur.role_name')
-            ->join('user_role ur', 'ur.id = u.role', 'left')
+                      r.name AS role_name')
+            ->join('roles r', 'r.id = u.role_id', 'left')
             ->where('u.id', $id)
-            ->where('ur.role_name', 'student')
+            ->where('r.name', 'student')
             ->get()->getRowArray() ?: null;
     }
 }
