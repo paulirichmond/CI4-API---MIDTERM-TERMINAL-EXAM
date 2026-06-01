@@ -22,13 +22,10 @@
 
         <?php 
             $dashboardLink = base_url('login');
-            $role = session('user')['role'] ?? '';
-            if ($role === 'admin') {
-                $dashboardLink = base_url('admin/roles');
-            } elseif ($role === 'teacher') {
-                $dashboardLink = base_url('dashboard');
-            } elseif ($role === 'student') {
-                $dashboardLink = base_url('student/dashboard');
+            if (session()->has('user')) {
+                $role = session('user')['role'] ?? '';
+                if ($role === 'student') $dashboardLink = base_url('student/dashboard');
+                elseif ($role === 'teacher' || $role === 'admin') $dashboardLink = base_url('dashboard');
             }
         ?>
 

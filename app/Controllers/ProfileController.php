@@ -18,8 +18,8 @@ class ProfileController extends BaseController
         // Prevent admin from viewing/editing their own profile via profile routes
         $currentRole = strtolower(session('user')['role'] ?? session('user')['role_name'] ?? '');
         if ($currentRole === 'admin') {
-            $message = 'You are currently logged in as an administrator. This account does not have the necessary permissions to view this system segment.';
-            return $this->response->setStatusCode(403)->setBody(view('errors/html/error_403', ['message' => $message, 'userRole' => 'admin']));
+            $message = 'You are currently logged in as a teacher. This account does not have the necessary permissions to view this system segment.';
+            return $this->response->setStatusCode(403)->setBody(view('errors/html/error_403', ['message' => $message]));
         }
 
         return view('profile/show', array_merge($this->data, ['user' => $user]));
@@ -32,8 +32,8 @@ class ProfileController extends BaseController
         // Prevent admin from editing their profile via profile routes
         $currentRole = strtolower(session('user')['role'] ?? session('user')['role_name'] ?? '');
         if ($currentRole === 'admin') {
-            $message = 'You are currently logged in as an administrator. This account does not have the necessary permissions to view this system segment.';
-            return $this->response->setStatusCode(403)->setBody(view('errors/html/error_403', ['message' => $message, 'userRole' => 'admin']));
+            $message = 'You are currently logged in as a teacher. This account does not have the necessary permissions to view this system segment.';
+            return $this->response->setStatusCode(403)->setBody(view('errors/html/error_403', ['message' => $message]));
         }
 
         return view('profile/edit', array_merge($this->data, ['user' => $user]));
@@ -46,8 +46,8 @@ class ProfileController extends BaseController
         $currentRole = strtolower(session('user')['role'] ?? session('user')['role_name'] ?? '');
         $currentUserId = (int) (session('user')['id'] ?? session('user')['userID'] ?? 0);
         if ($currentRole === 'admin' && ((int) ($user['id'] ?? 0) === $currentUserId)) {
-            $message = 'You are currently logged in as an administrator. This account does not have the necessary permissions to view this system segment.';
-            return $this->response->setStatusCode(403)->setBody(view('errors/html/error_403', ['message' => $message, 'userRole' => 'admin']));
+            $message = 'You are currently logged in as a teacher. This account does not have the necessary permissions to view this system segment.';
+            return $this->response->setStatusCode(403)->setBody(view('errors/html/error_403', ['message' => $message]));
         }
         // Resolve the numeric user id from possible shapes (userID, id, or session values)
         $userId = $user['userID'] ?? $user['id'] ?? session('user.userID') ?? session('user.id') ?? session('id') ?? null;
